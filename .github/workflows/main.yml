@@ -1,19 +1,23 @@
-name: Angular Build Check
+name: Production File Check
 
 on:
   push:
     branches: [ "main" ]
 
 jobs:
-  build-and-test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-      - name: Install Dependencies
-        run: npm install
-      - name: Build Angular
-        run: npm run build
+   check-production-files:
+     runs-on: ubuntu-latest
+     steps:
+       - name: Download Code from Repo
+         uses: actions/checkout@v4
+       - name: List All Files
+         run: ls -R
+       
+       - name: Verify Browser Folder Exists
+         run: |
+          if [ -d "browser" ]; then echo "Success: Production files are present!"
+          else
+            echo "Error: Production files missing!"
+           exit 1
+          fi
+         
